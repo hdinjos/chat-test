@@ -3,3 +3,11 @@
 * {
     scrollbar-width: thin;
   }
+
+  @theme {
+    --color-gray-line : #e9edef;
+    --color-room-hover: #f7f7f7;
+    --color-room-active: #f0f2f5;
+
+  }
+  /* #e9edef; */

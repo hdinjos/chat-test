@@ -1,13 +1,24 @@
-import { createMemoryHistory, createRouter } from 'vue-router'
+import { createRouter, createWebHistory } from "vue-router";
 
-import App from '../App.vue'
+import Home from "../pages/index.vue";
+import Chat from "../pages/chat/index.vue";
+import DetailChat from "../pages/chat/detail/index.vue";
 
 const routes = [
-  { path: '/', component: App },
-//   { path: '/about', component: AboutView },
-]
+  { path: "/", name: "home", component: Home, redirect: "chat" },
+  {
+    path: "/chat",
+    name: "chat",
+    component: Chat,
+    children: [
+      { path: ":room_id", name: "detail-chat", component: DetailChat },
+    ],
+  },
+];
 
 const router = createRouter({
-  history: createMemoryHistory(),
+  history: createWebHistory(),
   routes,
-})
+});
+
+export default router;
