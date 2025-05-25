@@ -1,42 +1,46 @@
 <script setup>
 import { ref, onMounted, watch } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useRoomStore } from "../../../stores/index";
 import { formatDate, getFileUrl, msgIsFile } from "../../../utils";
 
 const route = useRoute();
+const router = useRouter();
 const roomStore = useRoomStore();
 const detail = ref({});
 const dataChat = ref([]);
 
 const inputMsg = ref("");
 
+const getInitChat = () => {
+  if (route.params.room_id) {
+    const currentRoom = roomStore.data.find(
+      (item) => item.room_id === route.params.room_id
+    );
+    if (!currentRoom) {
+      router.replace({
+        name: "chat",
+      });
+    } else {
+      detail.value = currentRoom;
+      dataChat.value = [
+        {
+          msg: detail.value.last_comment_text,
+          name: detail.value.last_comment_sender,
+          date: formatDate(detail.value.last_comment_timestamp),
+          isSender: true,
+        },
+      ];
+    }
+  }
+};
+
 onMounted(() => {
-  detail.value = roomStore.data.find(
-    (item) => item.room_id === route.params.room_id
-  );
-  dataChat.value = [
-    {
-      msg: detail.value.last_comment_text,
-      name: detail.value.last_comment_sender,
-      date: formatDate(detail.value.last_comment_timestamp),
-      isSender: true,
-    },
-  ];
+  getInitChat();
 });
 
 watch(route, (val) => {
-  detail.value = roomStore.data.find(
-    (item) => item.room_id === val.params.room_id
-  );
-  dataChat.value = [
-    {
-      msg: detail.value.last_comment_text,
-      name: detail.value.last_comment_sender,
-      date: formatDate(detail.value.last_comment_timestamp),
-      isSender: true,
-    },
-  ];
+  getInitChat();
 });
 
 const changeLatestMsg = (msg) => {
