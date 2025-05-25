@@ -1,6 +1,7 @@
 <script setup>
 import { useRoute, useRouter } from "vue-router";
 import { useRoomStore } from "../../stores";
+import { msgIsFile, getFileUrl } from "../../utils/index";
 
 const route = useRoute();
 const router = useRouter();
@@ -27,7 +28,7 @@ const toChat = (roomId) => {
             class="pl-4 flex items-center hover:bg-room-hover cursor-pointer"
             :class="{
               'bg-room-active': d.room_id === route.params.room_id,
-              'bg-white': d.room_id !== route.params.room_id
+              'bg-white': d.room_id !== route.params.room_id,
             }"
           >
             <img
@@ -39,7 +40,11 @@ const toChat = (roomId) => {
                 <div class="font-medium">{{ d.name }}</div>
               </div>
               <div class="text-sm text text-last-msg line-clamp-1">
-                {{ d.last_comment_text }}
+                {{
+                  msgIsFile(d.last_comment_text)
+                    ? "Mengirim File"
+                    : d.last_comment_text
+                }}
               </div>
             </div>
           </div>
