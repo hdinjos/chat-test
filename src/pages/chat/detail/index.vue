@@ -31,6 +31,30 @@ const getInitChat = () => {
           date: formatDate(detail.value.last_comment_timestamp),
           isSender: true,
         },
+        {
+          msg: "Sampai jumpa besok pagi ya!",
+          name: "Logined User",
+          date: formatDate(new Date()),
+          isSender: false,
+        },
+        {
+          msg: "Baik, saya sudah siapkan presentasinya.",
+          name: "Logined User",
+          date: formatDate(new Date()),
+          isSender: false,
+        },
+        {
+          msg: "Halo Andi, iya. Meeting tetap jadi jam 10 pagi via Zoom",
+          name: "Logined User",
+          date: formatDate(new Date()),
+          isSender: true,
+        },
+        {
+          msg: "Halo Pak Budi, saya ingin konfirmasi soal meeting besok",
+          name: "Logined User",
+          date: formatDate(new Date()),
+          isSender: false,
+        },
       ];
     }
   }

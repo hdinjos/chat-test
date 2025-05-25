@@ -6,7 +6,7 @@ const props = defineProps({
   data: {
     type: Array,
   },
-  room_id: {
+  roomId: {
     type: String,
   },
 });
@@ -25,8 +25,8 @@ const toChat = (roomId) => {
     @click="toChat(d.room_id)"
     class="pl-4 flex items-center hover:bg-room-hover cursor-pointer"
     :class="{
-      'bg-room-active': d.room_id === room_id,
-      'bg-white': d.room_id !== room_id,
+      'bg-room-active': d.room_id === roomId,
+      'bg-white': d.room_id !== roomId,
     }"
   >
     <img
