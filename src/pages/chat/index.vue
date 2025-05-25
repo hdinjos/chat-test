@@ -1,7 +1,7 @@
 <script setup>
 import { useRoute, useRouter } from "vue-router";
 import { useRoomStore } from "../../stores";
-import { msgIsFile, getFileUrl } from "../../utils/index";
+import { msgIsFile } from "../../utils/index";
 
 const route = useRoute();
 const router = useRouter();

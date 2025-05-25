@@ -39,6 +39,15 @@ watch(route, (val) => {
   ];
 });
 
+const changeLatestMsg = (msg) => {
+  const newRoom = roomStore.data.map((item) => {
+    if (item.room_id === route.params.room_id) {
+      return { ...item, last_comment_text: msg };
+    }
+    return item;
+  });
+  roomStore.setData(newRoom);
+};
 const handleEnter = (e) => {
   if (e.code === "Enter") {
     if (inputMsg.value === "") return;
@@ -48,6 +57,7 @@ const handleEnter = (e) => {
       date: formatDate(new Date()),
       isSender: false,
     });
+    changeLatestMsg(inputMsg.value);
     inputMsg.value = "";
   }
 };
@@ -60,6 +70,7 @@ const handleSend = () => {
     date: formatDate(new Date()),
     isSender: false,
   });
+  changeLatestMsg(inputMsg.value);
   inputMsg.value = "";
 };
 </script>
