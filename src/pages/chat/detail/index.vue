@@ -1,17 +1,18 @@
 <script setup>
 import { ref, onMounted, watch } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import dataRooms from "../../../assets/data/list_rooms.json";
+import { useRoute } from "vue-router";
+import { useRoomStore } from "../../../stores/index";
 import { formatDate } from "../../../utils";
 
 const route = useRoute();
+const roomStore = useRoomStore();
 const detail = ref({});
 const dataChat = ref([]);
 
 const inputMsg = ref("");
 
 onMounted(() => {
-  detail.value = dataRooms.data.customer_rooms.find(
+  detail.value = roomStore.data.find(
     (item) => item.room_id === route.params.room_id
   );
   dataChat.value = [
@@ -25,7 +26,7 @@ onMounted(() => {
 });
 
 watch(route, (val) => {
-  detail.value = dataRooms.data.customer_rooms.find(
+  detail.value = roomStore.data.find(
     (item) => item.room_id === val.params.room_id
   );
   dataChat.value = [

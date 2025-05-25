@@ -1,9 +1,10 @@
 <script setup>
 import { useRoute, useRouter } from "vue-router";
-import dataRooms from "../../assets/data/list_rooms.json";
+import { useRoomStore } from "../../stores";
 
 const route = useRoute();
 const router = useRouter();
+const roomStore = useRoomStore();
 
 const toChat = (roomId) => {
   router.push({ name: "detail-chat", params: { room_id: roomId } });
@@ -20,7 +21,7 @@ const toChat = (roomId) => {
 
         <div class="overflow-y-auto flex-1 flow-column">
           <div
-            v-for="d in dataRooms.data.customer_rooms"
+            v-for="d in roomStore.data"
             :key="d.room_id"
             @click="toChat(d.room_id)"
             class="pl-4 flex items-center hover:bg-room-hover cursor-pointer"
