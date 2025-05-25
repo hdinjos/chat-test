@@ -2,7 +2,8 @@
 import { ref, onMounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useRoomStore } from "../../../stores/index";
-import { formatDate, getFileUrl, msgIsFile } from "../../../utils";
+import { formatDate } from "../../../utils";
+import BubbleChat from "../../../components/BubbleChat.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -39,7 +40,7 @@ onMounted(() => {
   getInitChat();
 });
 
-watch(route, (val) => {
+watch(route, () => {
   getInitChat();
 });
 
@@ -52,21 +53,8 @@ const changeLatestMsg = (msg) => {
   });
   roomStore.setData(newRoom);
 };
-const handleEnter = (e) => {
-  if (e.code === "Enter") {
-    if (inputMsg.value === "") return;
-    dataChat.value.unshift({
-      msg: inputMsg.value,
-      name: "Logined User",
-      date: formatDate(new Date()),
-      isSender: false,
-    });
-    changeLatestMsg(inputMsg.value);
-    inputMsg.value = "";
-  }
-};
 
-const handleSend = () => {
+const saveMsg = () => {
   if (inputMsg.value === "") return;
   dataChat.value.unshift({
     msg: inputMsg.value,
@@ -77,6 +65,16 @@ const handleSend = () => {
   changeLatestMsg(inputMsg.value);
   inputMsg.value = "";
 };
+
+const handleEnter = (e) => {
+  if (e.code === "Enter") {
+    saveMsg();
+  }
+};
+
+const handleSend = () => {
+  saveMsg();
+};
 </script>
 
 <template>
@@ -84,28 +82,12 @@ const handleSend = () => {
     <img
       class="bg-white w-10 h-10 rounded-full object-cover mr-4"
       :src="detail.user_avatar_url"
+      alt="avatar_img"
     />
     <div>{{ detail?.name }}</div>
   </div>
   <div class="h-full overflow-y-auto flex flex-col-reverse">
-    <div
-      v-for="(d, index) in dataChat"
-      :key="index"
-      class="px-16 flex"
-      :class="{ 'justify-start': d.isSender, 'justify-end': !d.isSender }"
-    >
-      <div
-        class="w-fit max-w-md text-left mb-3 px-3 py-2 rounded"
-        :class="{ 'bg-blue-200': d.isSender, 'bg-green-200': !d.isSender }"
-      >
-        <img v-if="msgIsFile(d.msg)" :src="getFileUrl(d.msg)" />
-        <div v-else>
-          {{ d.msg }}
-        </div>
-        <div class="text-sm text-end">{{ d.date }}</div>
-      </div>
-    </div>
-
+    <BubbleChat :data="dataChat" />
     <div class="mt-2"></div>
   </div>
   <div class="px-4 py-3 flex items-center bg-room-active gap-3">
